@@ -5,7 +5,7 @@ import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.concurrent.*;
-
+import java.util.*;
 public class ZTE {
 
     public CyclicBarrier barrier = new CyclicBarrier(3);
@@ -129,21 +129,111 @@ public class ZTE {
             return Arrays.toString(res);
         }
     }
-    public static void main(String[] args) throws IOException, ExecutionException, InterruptedException {
-        int [] data1 = new int[] {1,3,5,7,9};
-        int [] data2 = new int[] {1,2,3,5,7,9};
-        new Thread(new SortWorker(data1)).start();
-        new Thread(new SortWorker(data2)).start();
-        FutureTask<String> f = new FutureTask<>(new MergeWorker(data1,data2));
-        new Thread(f).start();
-        System.out.println((String) f.get());
-        data1 = null;
-        data2 = null;
-        //1.输入
+    private class ListNode {
+        int val;
+        ListNode next = null;
 
-        tofinoLog(16,6,3);
-        tofinoExp(16,6,0);
+        ListNode(int val) {
+            this.val = val;
+        }
+    }
+    public boolean isLoopList(ListNode pHead) {
+        ListNode slow = pHead;
+        ListNode fast = pHead;
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+            if (slow == fast) {
+                return true;
+            }
+        }
+        return false;
+    }
+    public ListNode EntryNodeOfLoop(ListNode pHead)
+    {
+        if (pHead == null) return pHead;
+        ListNode slow = pHead;
+        ListNode fast = pHead;
+        boolean isLoop = false;
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+            if (fast == slow) {
+                isLoop = true;
+                break;
+            }
+        }
+        if (!isLoop)return null;
+        ListNode p = slow;
+        ListNode q = pHead;
+        while (p != null && q != null) {
+            if (p == q) break;
+            p = p.next;
+            q = q.next;
+        }
+        return p;
+
+    }
+    public ArrayList<Integer> printListFromTailToHead(ListNode listNode) {
+        ArrayList<Integer> res = new ArrayList<>();
+        if (listNode == null)return res;
+        Stack<ListNode> s = new Stack<>();
+        ListNode p = listNode;
+        while (p != null) {
+            s.push(p);
+            p = p.next;
+        }
+        while (!s.isEmpty()) {
+            res.add(s.pop().val);
+        }
+        return res;
+    }
+    public boolean Find(int target, int [][] array) {
+        int row = array.length;
+        int col = array[0].length;
+        int posX = row - 1;
+        int posY = 0;
+        while (posX >= 0 && posY < col) {
+            int value = array[posX][posY];
+            if (value == target) return true;
+            if (value > target) {
+
+            }
+
+        }
+        return false;
+
+    }
+    public String replaceSpace(StringBuffer str) {
+        int l1 = str.length();
+        int spaceCnt = 0;
+        for (int i = 0; i < l1; i++) {
+            if (str.charAt(i) == ' ') {
+                spaceCnt++;
+
+            }
+        }
+        char [] ss = new char[l1 + spaceCnt * 2];
+        for (int i = l1 - 1; i >= 0; i--) {
+            if (str.charAt(i) == ' ') {
+                spaceCnt--;
+                ss[2 * spaceCnt + i] = '%';
+                ss[2 * spaceCnt + i + 1] =  '2';
+                ss[2 * spaceCnt + i + 2] = '0';
+            } else {
+                ss[2 * spaceCnt + i] = str.charAt(i);
+            }
+        }
+        return new String(ss);
+    }
+
+    public static void main(String[] args) throws IOException, ExecutionException, InterruptedException {
+        ZTE zte = new ZTE();
         //2.write you code
+        System.out.println('A' + 1);
+        System.out.println(zte.replaceSpace(new StringBuffer("We Are Happy")));
 
     }
 }
+
+

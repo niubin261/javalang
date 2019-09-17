@@ -1090,10 +1090,31 @@ public class Solution {
 
     }
 
-    public static boolean VerifySquenceOfBST(int[] sequence) {
-        boolean result = false;
-        return result;
 
+    private boolean helper(int [] seq, int l, int r) {
+        if(r<=l)return true;
+        int root = seq[r];
+        int i = l;
+
+        for(; i < r; i++) {
+            if(seq[i] > root) {
+                break;
+            }
+        }
+        int j = i;
+        for(; j < r; j++) {
+            if(seq[j] < root) {
+                return false;
+            }
+        }
+        return helper(seq,l,i-1) && helper(seq,i,r-1);
+
+
+    }
+    public boolean VerifySquenceOfBST(int [] sequence) {
+        int len = sequence.length;
+        if(len == 0) return false;
+        return helper(sequence,0,len-1);
     }
 
     public static int partition(int[] arr, int k, int left, int right) {
@@ -1849,6 +1870,10 @@ public class Solution {
         return (C[(m+n+1)/2 - 1] + C[(m+n+2)/2 - 1])/2.0;
     }
 
+
+
+
+
     private static int[] merge(int [] A, int [] B) {
         int la = A.length;
         int lb = B.length;
@@ -2003,7 +2028,40 @@ public class Solution {
         return node;
 
     }
+    public ArrayList<Integer> printMatrix(int [][] matrix) {
+        int row = matrix.length;
+        int col = matrix[0].length;
+        ArrayList<Integer> r = new ArrayList<>();
+        boolean [][] visited = new boolean[row][col];
+        int [][] next = new int[][] {
+                {0, 1},
+                {1, 0},
+                {0, -1},
+                {-1, 0}
+        };
+        int dir = 0;
+        int tx = 0;
+        int ty = 0;
+        for (int i = 0; i < row * col; i++) {
+            r.add(matrix[tx][ty]);
+            visited[tx][ty] = true;
+            int nextTx = tx + next[dir][0];
+            int nextTy = ty + next[dir][1];
+            if ((nextTx >= row) || (nextTy >= col) || nextTx < 0 || nextTy < 0 || (visited[nextTx][nextTy])) {
+                dir = (++dir) % 4;
+                tx = tx + next[dir][0];
+                ty = ty + next[dir][1];
+
+            } else {
+                tx = nextTx;
+                ty = nextTy;
+            }
+        }
+        return r;
+
+    }
     public static void main(String[] args) {
+        Solution solution = new Solution();
 //        HashSet set = new HashSet();
 //        set.add(1);
 //        set.add('a');
@@ -2139,6 +2197,12 @@ public class Solution {
         System.out.println(findMedianSortedArrays(new int[]{1,1},new int[]{1,2}));
         reverseListII(head);
         System.out.println(getMaxABSLeftAndRight(new int[]{4,6,0,7,3,3,5,0,9}));
+        System.out.println(solution.printMatrix(new int [][]{
+                {1,2,3,4},
+                {5,6,7,8},
+                {9,10,11,12},
+                {13,14,15,16}
+        }));
 
 
     }
