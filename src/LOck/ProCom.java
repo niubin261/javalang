@@ -45,9 +45,15 @@ public class ProCom {
     }
     public static void main(String [] args) throws InterruptedException {
         ProCom pc = new ProCom();
+        StringBuffer ss = new StringBuffer();
+        ss.append(111);
+        System.out.println(ss.toString().charAt(1));
         Thread producer = new Thread(() -> {
             try {
-                pc.produce(new Object());
+                while (true) {
+
+                    pc.produce(new Object());
+                }
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -55,7 +61,10 @@ public class ProCom {
         });
         Thread Consumer = new Thread(() -> {
             try {
-                pc.consume();
+                while (true) {
+
+                    pc.consume();
+                }
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

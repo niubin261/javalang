@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Scanner;
+import java.util.*;
 
 
 public class Main {
@@ -368,20 +365,36 @@ public class Main {
 
 
 
-
+    private int sum(int [] arr, int bng, int len) {
+        int sum = 0;
+        for (int i = 0; i < len; i++) {
+            sum += arr[bng + i];
+        }
+        return sum;
+    }
     public static void main(String[] args) {
-        ArrayList<int []> res = new ArrayList<>();
         Scanner in = new Scanner(System.in);
         Main m = new Main();
-        String IP = in.nextLine();
-        System.out.println(m.validIPAddressAll(IP));
-        System.out.println(1);
-        System.out.println(2);
-        for (int i = 3; i <= 100000; i++) {
-            if (m.isPrimer(i)) {
-                System.out.println(i);
-            }
+        int N = in.nextInt();
+        int M = in.nextInt();
+        int [] arr = new int[N];
+        for (int i = 0; i < N; i++) {
+            arr[i] = in.nextInt();
         }
+        int res = Integer.MAX_VALUE;
+
+        for (int i = 0; i < N; i++) {
+            for (int j = M; j <= N; j++) {
+                if (i + j <= N) {
+                    int t = 0;
+                    if ((t = m.sum(arr, i, j)) < res) res = t;
+                } else break;
+
+            }
+
+        }
+        System.out.println(res);
+
 
 
     }
