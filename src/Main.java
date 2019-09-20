@@ -372,30 +372,158 @@ public class Main {
         }
         return sum;
     }
+    private boolean isPhoneNumber(int len, StringBuilder str) {
+        if (len < 11)return false;
+        if (len == 11) {
+            return str.charAt(0) == '8';
+        }
+        int d = len - 11;
+        for (int i = 0; i < d; i++) {
+            if (str.charAt(i) == '8')return true;
+        }
+        return false;
+    }
+    private void maxAb(int [] arr) {
+        int sum1 = 0;
+        int sum2 = 0;
+        int len1 = arr.length / 2;
+        int le2 = arr.length - len1;
+        int [] arr1 = new int[len1];
+        int [] arr2 = new int[le2];
+        for (int i = 0; i < len1; i++) {
+            arr1[i] = arr[i];
+        }
+        for (int i = len1; i < arr.length; i++) {
+            arr2[i - len1] = arr[i];
+        }
+        for (int i = 0; i < len1; i++) {
+            sum1 += arr1[i];
+        }
+        for (int i = 0; i < le2; i++) {
+            sum2 += arr2[i];
+        }
+        int diff = sum1 - sum2;
+        while (diff != 0) {
+            int besti = 0, bestj = 0;
+            int bestchange=0;
+            for(int i=0;i< len1;i++) {
+                for (int j=0;j< le2;j++) {
+                    int change = arr1[i] - arr2[j];
+                    if (Math.abs(diff - 2 * change) < Math.abs(diff - 2 * bestchange)) {
+                        bestchange = change;
+                        besti = i;
+                        bestj = j;
+                    }
+
+                }
+
+            }
+            if (bestchange == 0) {
+                if (sum1 < sum2) {
+                    System.out.print(sum1 + " ");
+                    System.out.print(sum2);
+                } else {
+                    System.out.print(sum2 + " ");
+                    System.out.print(sum1);
+                }
+
+                return;
+            }
+            int t = arr1[besti];
+            arr1[besti] = arr2[bestj];
+            arr2[bestj] = t;
+            sum1 -= bestchange;
+            sum2 += bestchange;
+            diff = sum1 - sum2;
+        }
+        if (sum1 < sum2) {
+            System.out.print(sum1 + " ");
+            System.out.print(sum2);
+        } else {
+            System.out.print(sum2 + " ");
+            System.out.print(sum1);
+        }
+
+        return;
+
+    }
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
         Main m = new Main();
-        int N = in.nextInt();
-        int M = in.nextInt();
-        int [] arr = new int[N];
-        for (int i = 0; i < N; i++) {
+        int n = in.nextInt();
+        int k = in.nextInt();
+        int [] arr = new int[n];
+        for (int i = 0; i < n; i++) {
             arr[i] = in.nextInt();
         }
-        int res = Integer.MAX_VALUE;
-
-        for (int i = 0; i < N; i++) {
-            for (int j = M; j <= N; j++) {
-                if (i + j <= N) {
-                    int t = 0;
-                    if ((t = m.sum(arr, i, j)) < res) res = t;
-                } else break;
+        PriorityQueue<Integer> queue = new PriorityQueue<>();
+        for (int i = 0; i < n; i++) {
+            queue.offer(arr[i]);
+        }
+        for (int i = 0; i < k; i++) {
+            int t = queue.poll();
+            if (t != 0) {
+                System.out.println(t);
 
             }
 
+
         }
-        System.out.println(res);
 
 
+    }
+    private long ip2long(String IP) {
+        String [] ss = IP.split(".");
+        long res = 0;
+        if (ss.length != 4) throw new IllegalArgumentException();
+        long ip1 = Long.valueOf(ss[0]);
+        long ip2 = Long.valueOf(ss[1]);
+        long ip3 = Long.valueOf(ss[2]);
+        long ip4 = Long.valueOf(ss[3]);
+        return ip1 << 24 + ip2 << 16 + ip3 << 8 + ip4;
+    }
+    private int gcd(int min, int max) {
+        while (max % min != 0) {
+            int t = max % min;
+            max = min;
+            min = t;
+        }
+        return min;
+    }
+    private int lcm(int min, int max) {
+        return min * max / gcd(min, max);
+    }
+    public void removeDuplicates(ListNode head) {
+        // 在这里编写代码
+        if (head == null) {
+            return;
+        }
+        Map<Integer, Integer> map = new LinkedHashMap<>();
+        ListNode p = head;
+        while (p != null) {
+            if (!map.containsKey(p.val)) {
+                map.put(p.val, 1);
+            } else {
+                map.put(p.val, map.get(p.val) + 1);
+            }
+            p = p.next;
+        }
+        ListNode dummy = new ListNode(-1);
+        ListNode pHead = dummy;
+        for (int k : map.keySet()) {
+            int loop = map.get(k) > 2 ? 2 : map.get(k);
+            for (int j = 0; j < loop; j++) {
+                ListNode node = new ListNode(k);
+                pHead.next = node;
+                pHead = pHead.next;
+            }
+        }
+        head = dummy.next;
+        p = dummy.next;
+        while (p != null) {
+            System.out.print(p.val + " ");
+            p = p.next;
+        }
 
     }
     public void swap(int[] num,int i,int j){
