@@ -446,30 +446,69 @@ public class Main {
 
         return;
 
+
+    }
+    private long S(long n) {
+        long s = 0;
+        while (n != 0) {
+            s += n % 10;
+            n = n / 10;
+        }
+        return s;
+    }
+    private void minFre(int A, int B, int p,int q) {
+        int diff = B - A;
+        int t = 1;
+        while (true) {
+            if (p == diff)break;
+            if (p > diff) break;
+            p = p * q;
+            t++;
+        }
+        System.out.println(t);
+    }
+    private int [] sum(int [] arr) {
+        int [] sum = new int[arr.length + 1];
+        sum[0] = 0;
+        for (int i = 1; i <= arr.length; i++) {
+            sum[i] = sum[i - 1] + arr[i - 1];
+        }
+        return sum;
+    }
+    private void maxLen(int [] arr) {
+        int [] sum = sum(arr);
+        int len = arr.length;
+        int maxlen = Integer.MIN_VALUE;
+        for (int i = 0; i < len -1 ; i++) {
+            for (int j = 1; j < len; j++) {
+                for (int k = i + 1; k <=j; k++) {
+                    if (arr[k] > sum[k] -sum [i]) {
+                        if (maxlen < j - i - 1) {
+                            maxlen = j - i - 1;
+                        }
+                    }
+                }
+            }
+        }
+        System.out.println(maxlen);
     }
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
         Main m = new Main();
-        int n = in.nextInt();
-        int k = in.nextInt();
-        int [] arr = new int[n];
-        for (int i = 0; i < n; i++) {
+        int len = in.nextInt();
+        int [] arr = new int[len + 1];
+        for (int i = 1; i <= len; i++) {
             arr[i] = in.nextInt();
         }
-        PriorityQueue<Integer> queue = new PriorityQueue<>();
-        for (int i = 0; i < n; i++) {
-            queue.offer(arr[i]);
-        }
-        for (int i = 0; i < k; i++) {
-            int t = queue.poll();
-            if (t != 0) {
-                System.out.println(t);
-
+        int dis = 0;
+        for (int i = 2; i <= len; i++) {
+            for (int j = 1; j < i; j++) {
+                if (arr[j] > arr[i]) {
+                    dis += Math.abs(j - i);
+                }
             }
-
-
         }
-
+        System.out.println(dis);
 
     }
     private long ip2long(String IP) {
