@@ -1,3 +1,6 @@
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 
 
@@ -492,26 +495,24 @@ public class Main {
         }
         System.out.println(maxlen);
     }
-    public static void main(String[] args) {
+    private boolean isOdd(int num) {
+        return (num & 1) != 0;
+    }
+    public static void main(String[] args) throws IOException {
         Scanner in = new Scanner(System.in);
         Main m = new Main();
-        int len = in.nextInt();
-        int [] arr = new int[len + 1];
-        for (int i = 1; i <= len; i++) {
-            arr[i] = in.nextInt();
-        }
-        int dis = 0;
-        for (int i = 2; i <= len; i++) {
-            for (int j = 1; j < i; j++) {
-                if (arr[j] > arr[i]) {
-                    dis += Math.abs(j - i);
-                }
-            }
-        }
-        System.out.println(dis);
-
+        System.out.println(m.isOdd(9));
+        System.out.println(m.isOdd(6));
+        ListNode p = new ListNode(2);
+        ListNode p1 = new ListNode(2);
+        ListNode p2 = new ListNode(3);
+        p.next = p1;
+        p1.next = p2;
+        m.removeDup(p);
+        m.printList(p);
     }
     private long ip2long(String IP) {
+        long a = 100_000_000_000L;
         String [] ss = IP.split(".");
         long res = 0;
         if (ss.length != 4) throw new IllegalArgumentException();
@@ -531,6 +532,24 @@ public class Main {
     }
     private int lcm(int min, int max) {
         return min * max / gcd(min, max);
+    }
+    private ListNode removeDup(ListNode phead) {
+        ListNode p = phead;
+        while (p != null && p.next != null) {
+            if (p.val == p.next.val) {
+                p.next = p.next.next;
+            } else {
+                p = p.next;
+            }
+        }
+        return phead;
+    }
+    private void printList(ListNode pHead) {
+        ListNode p = pHead;
+        while (p != null) {
+            System.out.println(p.val);
+            p = p.next;
+        }
     }
     public void removeDuplicates(ListNode head) {
         // 在这里编写代码
